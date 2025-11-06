@@ -1,10 +1,15 @@
 import jwt from "jsonwebtoken";
-const JWT_SECRET = process.env.JWT_SECRET || "devsecret";
+
+const JWT_SECRET = process.env.JWT_SECRET as jwt.Secret | undefined;
 
 export function signToken(payload: object) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || "7d" });
+  if (!JWT_SECRET) throw new Error("JWT_SECRET missing");
+  const expiresInEnv = process.env.JWT_EXPIRES_IN;
+  const expiresIn = (expiresInEnv ?? "7d") as NonNullable<jwt.SignOptions["expiresIn"]>;
+  return jwt.sign(payload, JWT_SECRET, { expiresIn });
 }
 
 export function verifyToken(token: string) {
-  return jwt.verify(token, JWT_SECRET) as any;
+  if (!JWT_SECRET) throw new Error("JWT_SECRET missing");
+  return jwt.verify(token, JWT_SECRET);
 }

@@ -15,11 +15,12 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   try {
     const parse = registerSchema.safeParse(req.body);
-    if (!parse.success) return res.status(400).json({ error: parse.error.errors });
+    if (!parse.success) return res.status(400).json({ error: parse.error.issues });
 
     const { name, email, password, referralCode } = parse.data;
+    const normalizedEmail = email.toLowerCase().trim();
 
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({ email: normalizedEmail });
     if (existing) return res.status(400).json({ message: "Email already in use" });
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -29,7 +30,7 @@ router.post("/register", async (req, res) => {
 
     const user = new User({
       name,
-      email,
+      email: normalizedEmail,
       passwordHash,
       referralCode: referralCodeGenerated,
       credits: 0,
@@ -73,10 +74,11 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const parse = loginSchema.safeParse(req.body);
-    if (!parse.success) return res.status(400).json({ error: parse.error.errors });
+    if (!parse.success) return res.status(400).json({ error: parse.error.issues });
 
     const { email, password } = parse.data;
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const ok = await bcrypt.compare(password, user.passwordHash);
