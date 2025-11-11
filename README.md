@@ -59,18 +59,6 @@ A --> F[State: Zustand Store]
 
 ---
 
-## 🖼️ Screenshots
-
-### 🏠 Dashboard
-
-![Dashboard Screenshot](assets/dashboard.png)
-
-### 🔐 Login & Register
-
-![Auth Screenshot](assets/auth.png)
-
----
-
 ## 📁 Folder Structure
 
 ### Backend
