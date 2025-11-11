@@ -185,12 +185,8 @@ Creates:
 
 ## 🧠 Author
 
-**Suraj Gholase**  
+**Janba Gholase**  
 Full Stack Developer — MERN / Android / Java  
 📧 surajgholase41@gmail.com
 
 ---
-
-## 🏁 License
-
-This project is part of the **FileSure Internship Assignment** and may be reused for educational purposes.
